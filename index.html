@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KinReach — Check in. Reach someone.</title>
+<meta name="description" content="KinReach is a private personal check-in app. Set a timer, check in, and if you ever go silent, KinReach emails someone you trust. No location, no ads, no tracking.">
+<style>
+  :root{
+    --slate:#2C3E50; --slate-2:#22303d; --green:#27AE60; --green-d:#1e8e4e;
+    --ink:#1c2733; --muted:#5b6b7a; --line:#e6ebf0; --bg:#ffffff; --soft:#f5f8fa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--green);text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;background:rgba(44,62,80,.96);backdrop-filter:blur(6px);color:#fff;z-index:10}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:19px;letter-spacing:.3px;color:#fff}
+  .brand svg{display:block}
+  .navlinks{display:flex;gap:24px;font-size:15px}
+  .navlinks a{color:#cdd8e2}
+  .navlinks a:hover{color:#fff}
+  @media(max-width:560px){.navlinks{display:none}}
+
+  /* hero */
+  .hero{background:linear-gradient(160deg,var(--slate) 0%,var(--slate-2) 100%);color:#fff;padding:78px 0 88px;text-align:center}
+  .hero .heart-big{margin:0 auto 20px;width:64px;height:64px;display:block}
+  .hero h1{font-size:clamp(32px,6vw,52px);line-height:1.1;letter-spacing:-.5px;margin-bottom:16px}
+  .hero p.sub{font-size:clamp(17px,2.4vw,21px);color:#c4d0db;max-width:620px;margin:0 auto 28px}
+  .badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:#ffffff14;border:1px solid #ffffff2e;color:#e8eef4;padding:11px 18px;border-radius:12px;font-size:14.5px;font-weight:600}
+  .badge small{display:block;font-size:11px;font-weight:500;color:#a9b7c4}
+
+  /* sections */
+  section{padding:70px 0}
+  .eyebrow{color:var(--green);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+  h2{font-size:clamp(26px,4vw,34px);letter-spacing:-.3px;margin-bottom:14px;color:var(--slate)}
+  .lead{color:var(--muted);font-size:18px;max-width:640px}
+  .center{text-align:center}
+  .center .lead{margin:0 auto}
+
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  @media(max-width:820px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:460px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .step .n{width:34px;height:34px;border-radius:9px;background:var(--slate);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:12px}
+  .step h3{font-size:17px;margin-bottom:6px}
+  .step p{font-size:15px;color:var(--muted)}
+
+  .who{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .who-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:30px}
+  @media(max-width:640px){.who-grid{grid-template-columns:1fr}}
+  .who-item{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .who-item .dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:var(--green);margin-top:8px}
+  .who-item p{font-size:15.5px}
+
+  .privacy{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+  @media(max-width:760px){.privacy{grid-template-columns:1fr;gap:24px}}
+  .privacy ul{list-style:none;margin-top:18px}
+  .privacy li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;font-size:16.5px}
+  .privacy li svg{flex:0 0 auto;margin-top:4px}
+  .privacy-card{background:var(--slate);color:#fff;border-radius:18px;padding:30px}
+  .privacy-card .big{font-size:44px;font-weight:800;line-height:1;color:var(--green)}
+  .privacy-card p{color:#c4d0db;margin-top:8px}
+  .privacy-card hr{border:none;border-top:1px solid #ffffff26;margin:20px 0}
+
+  .disclaimer{background:#fff7ec;border:1px solid #f2dcb8;border-radius:14px;padding:22px 24px;margin-top:12px}
+  .disclaimer strong{color:#8a5a12}
+
+  footer{background:var(--slate);color:#c4d0db;padding:46px 0 40px;font-size:14.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center}
+  footer .fl{display:flex;gap:22px;flex-wrap:wrap}
+  footer a{color:#e8eef4}
+  footer .brand{font-size:17px}
+  .fine{color:#8ea0b0;font-size:13px;margin-top:16px;max-width:680px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 8.2a4.3 4.3 0 0 1 7.5 2.6C19.5 16.4 12 21 12 21z" fill="#27AE60"/></svg>
+      KinReach
+    </div>
+    <div class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-service.html">Terms</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <svg class="heart-big" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 8.2a4.3 4.3 0 0 1 7.5 2.6C19.5 16.4 12 21 12 21z" fill="#27AE60"/></svg>
+    <h1>Check in. Reach someone.</h1>
+    <p class="sub">KinReach is a quiet safety net. Set a check-in timer, and if you ever miss it, we automatically email the one person you trust — so you're never silently unreachable.</p>
+    <div class="badges">
+      <span class="badge">🍎 App Store<small>Coming soon</small></span>
+      <span class="badge">▶ Google Play<small>Coming soon</small></span>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap center">
+    <div class="eyebrow">How it works</div>
+    <h2>Silence is the signal</h2>
+    <p class="lead">As long as you check in, nothing happens and no one is bothered. It's only your <em>absence</em> that triggers an alert.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Add a contact</h3><p>Choose one trusted person and enter their email.</p></div>
+      <div class="step"><div class="n">2</div><h3>Set your interval</h3><p>Every 24, 48, or 72 hours — whatever fits your life.</p></div>
+      <div class="step"><div class="n">3</div><h3>Check in</h3><p>A tap resets the timer. Do it whenever you're okay.</p></div>
+      <div class="step"><div class="n">4</div><h3>If you go silent</h3><p>Miss a deadline and we email your contact automatically — even if your phone is off.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="who">
+  <div class="wrap">
+    <div class="eyebrow">Who it's for</div>
+    <h2>Peace of mind, for the people who need it</h2>
+    <div class="who-grid">
+      <div class="who-item"><span class="dot"></span><p>People who live alone and want someone alerted if they go quiet.</p></div>
+      <div class="who-item"><span class="dot"></span><p>Anyone keeping a caring eye on an elderly parent or relative.</p></div>
+      <div class="who-item"><span class="dot"></span><p>Solo travelers and hikers heading into higher-risk situations.</p></div>
+      <div class="who-item"><span class="dot"></span><p>Anyone who just wants one trusted person notified if they can't respond.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap privacy">
+    <div>
+      <div class="eyebrow">Privacy first</div>
+      <h2>We collect as little as possible</h2>
+      <p class="lead">KinReach is designed to know almost nothing about you. The only thing it needs is a schedule and one email address.</p>
+      <ul>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="#27AE60" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> No location tracking. Ever.</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="#27AE60" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> No ads and no third-party trackers.</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="#27AE60" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Your contact's details are encrypted.</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="#27AE60" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Delete your data anytime, right in the app.</li>
+      </ul>
+    </div>
+    <div class="privacy-card">
+      <div class="big">0</div>
+      <p>pieces of location data collected.</p>
+      <hr>
+      <div class="big">1</div>
+      <p>email address — the trusted contact you choose.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="disclaimer">
+      <p><strong>KinReach is not an emergency service.</strong> It does not contact 911, police, or medical services, and it cannot guarantee that any alert will be delivered. In an emergency, always contact your local emergency services directly.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fl" style="flex-direction:column;gap:6px">
+      <div class="brand" style="color:#fff">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><path d="M12 21s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 8.2a4.3 4.3 0 0 1 7.5 2.6C19.5 16.4 12 21 12 21z" fill="#27AE60"/></svg>
+        KinReach
+      </div>
+    </div>
+    <div class="fl">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-service.html">Terms of Service</a>
+      <a href="mailto:support@kinreach.app">support@kinreach.app</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="fine">&copy; 2026 KinReach. A personal check-in tool — not an emergency service. In an emergency, contact your local emergency services directly.</p>
+  </div>
+</footer>
+
+</body>
+</html>
